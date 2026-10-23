@@ -583,16 +583,41 @@ logEvent("EGG TERMINAL 시작");
 
 </body>
 
-<h2 style="color: #C084FC;">작은 창자 상피세포 관련 문서</h2>
 
-<p style="color: #C084FC;">
-작은창자상피세포는 제 1 세상의 초기 세포다
-</p>
+<div id="cellRecords" style="display:none; margin:20px 0; line-height:1.8;">
 
-<p style="color: #C084FC;">
-작은창자상피세포 능력: 분열
-<br>
-(많이하면 부작용 발생)
+  <div style="color:#C084FC; border:1px solid #C084FC; padding:12px; margin-bottom:12px;">
+    <h3>작은 창자 상피세포 관련 문서</h3>
+    작은창자상피세포는 제 1 세상의 초기 세포다<br>
+    작은창자 상피세포 능력: 분열( 많이하면 부작용 발생)
+  </div>
+
+  <div style="color:#39FF88; border:1px solid #39FF88; padding:12px; margin-bottom:12px;">
+    <h3>잎살세포 관련 문서</h3>
+    잎살 세포는 제 1 세상의 초기 세포다<br>
+    잎살세포 능력: 뇌지컬이 뛰어남
+  </div>
+
+  <div style="color:#FF922B; border:1px solid #FF922B; padding:12px; margin-bottom:12px;">
+    <h3>신경세포 관련 문서</h3>
+    신경세포는 제 1세상의 초기 세포다<br>
+    신경세포 능력: 위기를 느낄때 빠르게 달릴수있음
+  </div>
+
+  <div style="color:#FF4545; border:1px solid #FF4545; padding:12px; margin-bottom:12px;">
+    <h3>적혈구 관련 문서</h3>
+    적혈구는 제 1세상의 초기 세포다<br>
+    적혈구 능력: 상처회복 능력( 발동 조건이 아직 연구 되지않음)
+  </div>
+
+  <div style="color:#249BFF; border:1px solid #249BFF; padding:12px;">
+    <h3>물곰 관련 문서</h3>
+    물곰은 제 1.5세상의 초기 미생물이다<br>
+    물곰 능력: 절때 안죽는다 ( 실험 가능)
+  </div>
+
+</div>
+
 </p>
 
 </html>
