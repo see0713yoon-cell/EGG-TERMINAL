@@ -582,4 +582,17 @@ logEvent("EGG TERMINAL 시작");
 </script>
 
 </body>
+
+<h2 style="color: #C084FC;">작은 창자 상피세포 관련 문서</h2>
+
+<p style="color: #C084FC;">
+작은창자상피세포는 제 1 세상의 초기 세포다
+</p>
+
+<p style="color: #C084FC;">
+작은창자상피세포 능력: 분열
+<br>
+(많이하면 부작용 발생)
+</p>
+
 </html>
