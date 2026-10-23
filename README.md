@@ -616,8 +616,4 @@ logEvent("EGG TERMINAL 시작");
     물곰 능력: 절때 안죽는다 ( 실험 가능)
   </div>
 
-</div>
-
-</p>
-
 </html>
