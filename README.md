@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -16,6 +17,7 @@ h1 {
   border-bottom:1px solid #ff3333;
   padding-bottom:12px; letter-spacing:3px;
 }
+h3 { margin-top:0; }
 .warning {
   border:1px solid red; padding:12px;
   margin:20px 0; background:#210606; line-height:1.8;
@@ -75,6 +77,22 @@ button:active { background:#900; }
 button:focus-visible, input:focus-visible {
   outline:2px solid #ff7777;
 }
+#cellRecords {
+  display:none;
+  margin:20px 0;
+  line-height:1.8;
+}
+.cell-card {
+  padding:12px;
+  margin-bottom:12px;
+  background:#100909;
+}
+.cell-purple { color:#C084FC; border:1px solid #C084FC; }
+.cell-green { color:#39FF88; border:1px solid #39FF88; }
+.cell-orange { color:#FF922B; border:1px solid #FF922B; }
+.cell-red { color:#FF4545; border:1px solid #FF4545; }
+.cell-blue { color:#249BFF; border:1px solid #249BFF; }
+#cellRecords h3 { font-size:16px; }
 </style>
 </head>
 <body>
@@ -130,11 +148,46 @@ EGG RESEARCH LABORATORY<br>
 UNAUTHORIZED ACCESS IS PROHIBITED.
 </p>
 
+<div id="cellRecords">
+
+  <div class="cell-card cell-purple">
+    <h3>작은창자상피세포 관련 문서</h3>
+    작은창자상피세포는 제1세상의 초기 세포다.<br>
+    능력: 분열 (많이 하면 부작용 발생)
+  </div>
+
+  <div class="cell-card cell-green">
+    <h3>잎살세포 관련 문서</h3>
+    잎살세포는 제1세상의 초기 세포다.<br>
+    능력: 뇌지컬이 뛰어남
+  </div>
+
+  <div class="cell-card cell-orange">
+    <h3>신경세포 관련 문서</h3>
+    신경세포는 제1세상의 초기 세포다.<br>
+    능력: 위기를 느낄 때 빠르게 달릴 수 있음
+  </div>
+
+  <div class="cell-card cell-red">
+    <h3>적혈구 관련 문서</h3>
+    적혈구는 제1세상의 초기 세포다.<br>
+    능력: 상처 회복 (발동 조건은 아직 연구되지 않음)
+  </div>
+
+  <div class="cell-card cell-blue">
+    <h3>물곰 관련 문서</h3>
+    물곰은 제1.5세상의 초기 미생물이다.<br>
+    능력: 절대 죽지 않음 (실험 가능)
+  </div>
+
+</div>
+
 <script>
 const output = document.getElementById("output");
 const input = document.getElementById("cmd");
 const alertBox = document.getElementById("alert");
 const connection = document.getElementById("connection");
+const cellRecords = document.getElementById("cellRecords");
 
 let accessLevel = 1;
 let unknownConnections = 0;
@@ -278,11 +331,8 @@ function showFiles() {
   let result = "[FILE DIRECTORY]\n";
 
   files.forEach(file => {
-    if (file.level <= accessLevel) {
-      result += "[OPEN] " + file.name + "\n";
-    } else {
-      result += "[LOCKED] " + file.name + "\n";
-    }
+    result += (file.level <= accessLevel ? "[OPEN] " : "[LOCKED] ")
+      + file.name + "\n";
   });
 
   result += "\n접근 가능: " +
@@ -396,7 +446,7 @@ function triggerIncident() {
   logEvent("비정상 이벤트 발생");
 
   print(
-    "\n⚠ SYSTEM ALERT\n" +
+    "⚠ SYSTEM ALERT\n" +
     "등록되지 않은 접속이 감지되었습니다.\n" +
     "접속자: UNKNOWN\n" +
     "세션: A1-????\n" +
@@ -462,6 +512,7 @@ help                 - 명령어 목록
 status               - 시스템 상태
 security             - 보안 등급 확인
 files                - 파일 목록
+cells                - 세포 소개 문서 열기
 access a1-0404       - A-1 인증
 unlock [인증 코드]   - 보안 등급 해금
 cat [파일명]         - 파일 읽기
@@ -501,6 +552,13 @@ trace`
 
   else if (cmd === "files") {
     showFiles();
+  }
+
+  else if (cmd === "cells") {
+    cellRecords.style.display = "block";
+    print("세포 소개 문서가 열렸습니다.");
+    print("초기 세포 기록을 확인하십시오.");
+    cellRecords.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   else if (cmd === "access a1-0404") {
@@ -582,3 +640,4 @@ logEvent("EGG TERMINAL 시작");
 </script>
 
 </body>
+</html>
