@@ -78,7 +78,8 @@ function runCommand() {
   output.textContent += "\n\n> " + cmd + "\n";
 
   const commands = {
-    help: "사용 가능한 명령어: help, status, files, access A1-0404, clear",
+    help: help: "사용 가능한 명령어: help, status, files, database, access A1-0404, clear",
+database: "CELL DATABASE\n공식 도감: https://m.blog.naver.com/badwars_ghosts/224307549809",,
     status: "시스템: ONLINE\n연구소: EGG\n대상 실험체: A-1\n기록 상태: 일부 손상",
     files: "검색된 파일:\nsession_001.log\nsubject_A1.dat\nincident_0404.log",
     "access A1-0404": "접근 코드 확인 중...\n인증 성공.\n기록 일부가 해금되었습니다.\n[비밀 기록] A-1은 처음부터 깨어 있었다."
