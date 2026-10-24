@@ -74,6 +74,25 @@ button:active { background:#900; }
   50% { transform:translateX(-3px); }
   100% { transform:translateX(0); }
 }
+
+/* NIGHTMARE: 5초 동안 화면 흔들기 */
+body.nightmare {
+  animation: nightmareShake .12s infinite;
+  will-change: transform;
+}
+@keyframes nightmareShake {
+  0%, 100% { transform:translate(0, 0); }
+  10% { transform:translate(-5px, 3px); }
+  20% { transform:translate(5px, -3px); }
+  30% { transform:translate(-4px, -4px); }
+  40% { transform:translate(4px, 4px); }
+  50% { transform:translate(-6px, 2px); }
+  60% { transform:translate(6px, -2px); }
+  70% { transform:translate(-3px, 4px); }
+  80% { transform:translate(3px, -4px); }
+  90% { transform:translate(-4px, 2px); }
+}
+
 button:focus-visible, input:focus-visible {
   outline:2px solid #ff7777;
 }
@@ -209,6 +228,9 @@ let rebooted = false;
 let originRead = false;
 let glitchActive = false;
 
+/* NIGHTMARE 타이머 */
+let nightmareTimer = null;
+
 const levelNames = [
   "일반 시스템",
   "제한된 연구 기록",
@@ -341,6 +363,37 @@ function updateSecurity() {
   });
 
   updateMonitor();
+}
+
+/* NIGHTMARE 명령 실행 */
+function activateNightmare() {
+  // 이미 실행 중이면 타이머를 초기화해서 5초를 다시 시작
+  if (nightmareTimer !== null) {
+    clearTimeout(nightmareTimer);
+  }
+
+  document.body.classList.add("nightmare");
+
+  print(
+    "⚠ NIGHTMARE PROTOCOL ACTIVATED\n" +
+    "화면 이상 감지.\n" +
+    "시스템 안정화까지 5초..."
+  );
+
+  logEvent("NIGHTMARE PROTOCOL ACTIVATED");
+
+  nightmareTimer = setTimeout(() => {
+    document.body.classList.remove("nightmare");
+    nightmareTimer = null;
+
+    print(
+      "\n[SYSTEM RECOVERY]\n" +
+      "화면 복구 완료.\n" +
+      "NIGHTMARE PROTOCOL ENDED."
+    );
+
+    logEvent("NIGHTMARE PROTOCOL ENDED");
+  }, 5000);
 }
 
 function openGuide() {
@@ -552,6 +605,7 @@ security             - 보안 등급 확인
 files                - 파일 목록
 cells                - 세포 소개 문서 열기
 도감                 - 네이버 블로그 세포 도감 열기
+나이트메어           - 5초 동안 화면 흔들기
 access a1-0404       - A-1 인증
 unlock [인증 코드]   - 보안 등급 해금
 cat [파일명]         - 파일 읽기
@@ -569,6 +623,10 @@ cat session_001.log
 logs
 trace`
     );
+  }
+
+  else if (cmd === "나이트메어") {
+    activateNightmare();
   }
 
   else if (cmd === "status") {
