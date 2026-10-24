@@ -179,7 +179,7 @@ UNAUTHORIZED ACCESS IS PROHIBITED.
   <div class="cell-card cell-red">
     <h3>적혈구 관련 문서</h3>
     적혈구는 제1세상의 초기 세포다.<br>
-    능력: 상처 회복 (발동 조건은 아직 연구되지 않음)
+    능력: 빠른 상처 회복 (발동 조건은 아직 연구되지 않음)
   </div>
 
   <div class="cell-card cell-blue">
