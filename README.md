@@ -5,121 +5,268 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>EGG TERMINAL</title>
+
 <style>
 :root { color-scheme: dark; }
 * { box-sizing: border-box; }
+
 body {
-  margin:0; padding:20px;
-  background:#080808; color:#ff4545;
-  font-family:monospace;
-}
-h1 {
-  border-bottom:1px solid #ff3333;
-  padding-bottom:12px; letter-spacing:3px;
-}
-h3 { margin-top:0; }
-.warning {
-  border:1px solid red; padding:12px;
-  margin:20px 0; background:#210606; line-height:1.8;
-}
-.panel {
-  border:1px solid #522020;
-  background:#100909; padding:12px; margin:16px 0;
-}
-.panel-title { color:#ff7777; margin-bottom:10px; }
-.level-list { display:grid; gap:8px; }
-.level-item {
-  display:flex; justify-content:space-between;
-  gap:8px; font-size:12px;
-}
-.locked { color:#666; }
-.unlocked { color:#ff4545; }
-.bar { height:6px; background:#301010; margin-top:12px; }
-#progress {
-  height:6px; width:20%; background:#ff4545;
-  transition:width .3s;
-}
-#output {
-  white-space:pre-wrap; overflow-wrap:anywhere;
-  line-height:1.7; color:#ff7777; min-height:180px;
-}
-.row { display:flex; gap:8px; }
-input {
-  flex:1; width:0; min-width:0;
-  background:#111; color:#ff5555;
-  border:1px solid #833; padding:12px;
-  font-family:monospace; font-size:16px;
-}
-button {
-  background:#500; color:white; border:1px solid red;
-  padding:10px 14px; font-family:monospace;
-  font-size:14px; cursor:pointer;
-}
-button:active { background:#900; }
-.note { color:#777; font-size:12px; line-height:1.7; }
-#alert {
-  display:none; border:1px solid #ff2222;
-  background:#350000; color:#ff5555;
-  padding:12px; margin:14px 0;
-  animation:flicker .25s infinite alternate;
-}
-@keyframes flicker {
-  from { opacity:1; }
-  to { opacity:.65; }
-}
-.glitch { animation:shake .15s 3; }
-@keyframes shake {
-  0% { transform:translateX(0); }
-  25% { transform:translateX(3px); }
-  50% { transform:translateX(-3px); }
-  100% { transform:translateX(0); }
+  margin: 0;
+  padding: 20px;
+  background: #080808;
+  color: #ff4545;
+  font-family: monospace;
 }
 
-/* NIGHTMARE: 5초 동안 화면 흔들기 */
+h1 {
+  border-bottom: 1px solid #ff3333;
+  padding-bottom: 12px;
+  letter-spacing: 3px;
+}
+
+h3 { margin-top: 0; }
+
+.warning {
+  border: 1px solid red;
+  padding: 12px;
+  margin: 20px 0;
+  background: #210606;
+  line-height: 1.8;
+}
+
+.panel {
+  border: 1px solid #522020;
+  background: #100909;
+  padding: 12px;
+  margin: 16px 0;
+}
+
+.panel-title {
+  color: #ff7777;
+  margin-bottom: 10px;
+}
+
+.level-list { display: grid; gap: 8px; }
+
+.level-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.locked { color: #666; }
+.unlocked { color: #ff4545; }
+
+.bar {
+  height: 6px;
+  background: #301010;
+  margin-top: 12px;
+}
+
+#progress {
+  height: 6px;
+  width: 20%;
+  background: #ff4545;
+  transition: width .3s;
+}
+
+#output {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.7;
+  color: #ff7777;
+  min-height: 180px;
+}
+
+.row {
+  display: flex;
+  gap: 8px;
+}
+
+input {
+  flex: 1;
+  width: 0;
+  min-width: 0;
+  background: #111;
+  color: #ff5555;
+  border: 1px solid #833;
+  padding: 12px;
+  font-family: monospace;
+  font-size: 16px;
+}
+
+button {
+  background: #500;
+  color: white;
+  border: 1px solid red;
+  padding: 10px 14px;
+  font-family: monospace;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+button:active { background: #900; }
+
+.note {
+  color: #777;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+#alert {
+  display: none;
+  border: 1px solid #ff2222;
+  background: #350000;
+  color: #ff5555;
+  padding: 12px;
+  margin: 14px 0;
+  animation: flicker .25s infinite alternate;
+}
+
+@keyframes flicker {
+  from { opacity: 1; }
+  to { opacity: .65; }
+}
+
+.glitch { animation: shake .15s 3; }
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(3px); }
+  50% { transform: translateX(-3px); }
+  100% { transform: translateX(0); }
+}
+
+/* 기존 화면 흔들기 효과 */
 body.nightmare {
   animation: nightmareShake .12s infinite;
   will-change: transform;
 }
+
 @keyframes nightmareShake {
-  0%, 100% { transform:translate(0, 0); }
-  10% { transform:translate(-5px, 3px); }
-  20% { transform:translate(5px, -3px); }
-  30% { transform:translate(-4px, -4px); }
-  40% { transform:translate(4px, 4px); }
-  50% { transform:translate(-6px, 2px); }
-  60% { transform:translate(6px, -2px); }
-  70% { transform:translate(-3px, 4px); }
-  80% { transform:translate(3px, -4px); }
-  90% { transform:translate(-4px, 2px); }
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-5px, 3px); }
+  20% { transform: translate(5px, -3px); }
+  30% { transform: translate(-4px, -4px); }
+  40% { transform: translate(4px, 4px); }
+  50% { transform: translate(-6px, 2px); }
+  60% { transform: translate(6px, -2px); }
+  70% { transform: translate(-3px, 4px); }
+  80% { transform: translate(3px, -4px); }
+  90% { transform: translate(-4px, 2px); }
 }
 
-button:focus-visible, input:focus-visible {
-  outline:2px solid #ff7777;
+/* NIGHTMARE: 빨강·검정 화면 점멸 */
+body.nightmare-flash {
+  animation: nightmareFlash .2s steps(1, end) 20;
 }
+
+@keyframes nightmareFlash {
+  0%, 49% {
+    background: #ff0000;
+    color: #fff;
+  }
+  50%, 100% {
+    background: #080808;
+    color: #ff4545;
+  }
+}
+
+body.nightmare-flash #alert {
+  display: block;
+  background: #ff0000;
+  color: #fff;
+  border: 2px solid #fff;
+}
+
+body.nightmare-flash h1,
+body.nightmare-flash .warning,
+body.nightmare-flash .panel,
+body.nightmare-flash #output {
+  color: #fff;
+}
+
+/* 긴급 경고 전체 화면 */
+#nightmareOverlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #080808;
+  color: #ff3333;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px;
+  font-family: monospace;
+}
+
+#nightmareOverlay.active {
+  display: flex;
+}
+
+#nightmareMessage {
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 2;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid #ff7777;
+}
+
 #guideButton {
-  width:100%; margin-top:12px;
-  padding:13px; background:#160b20;
-  color:#C084FC; border:1px solid #C084FC;
+  width: 100%;
+  margin-top: 12px;
+  padding: 13px;
+  background: #160b20;
+  color: #C084FC;
+  border: 1px solid #C084FC;
 }
-#guideButton:active { background:#35164b; }
+
+#guideButton:active { background: #35164b; }
+
 #cellRecords {
-  display:none; margin:20px 0; line-height:1.8;
+  display: none;
+  margin: 20px 0;
+  line-height: 1.8;
 }
+
 .cell-card {
-  padding:12px; margin-bottom:12px;
-  background:#100909;
+  padding: 12px;
+  margin-bottom: 12px;
+  background: #100909;
 }
-.cell-purple { color:#C084FC; border:1px solid #C084FC; }
-.cell-green { color:#39FF88; border:1px solid #39FF88; }
-.cell-orange { color:#FF922B; border:1px solid #FF922B; }
-.cell-red { color:#FF4545; border:1px solid #FF4545; }
-.cell-blue { color:#249BFF; border:1px solid #249BFF; }
-#cellRecords h3 { font-size:16px; }
+
+.cell-purple { color: #C084FC; border: 1px solid #C084FC; }
+.cell-green { color: #39FF88; border: 1px solid #39FF88; }
+.cell-orange { color: #FF922B; border: 1px solid #FF922B; }
+.cell-red { color: #FF4545; border: 1px solid #FF4545; }
+.cell-blue { color: #249BFF; border: 1px solid #249BFF; }
+
+#cellRecords h3 { font-size: 16px; }
+
+@media (prefers-reduced-motion: reduce) {
+  body.nightmare-flash {
+    animation: none;
+    background: #080808;
+  }
+}
 </style>
 </head>
+
 <body>
 
 <h1>EGG TERMINAL</h1>
+
+<!-- NIGHTMARE 경고 화면 -->
+<div id="nightmareOverlay" role="alert" aria-live="assertive">
+  <div id="nightmareMessage"></div>
+</div>
 
 <div class="warning">
 ⚠ RESTRICTED RESEARCH SYSTEM<br>
@@ -167,7 +314,7 @@ CONNECTION: <span id="connection">ONLINE</span>
 </div>
 
 <button id="guideButton" type="button">
-   세포 도감 열기
+  세포 도감 열기
 </button>
 
 <p class="note">
@@ -228,8 +375,9 @@ let rebooted = false;
 let originRead = false;
 let glitchActive = false;
 
-/* NIGHTMARE 타이머 */
+/* NIGHTMARE 타이머: 중복 선언하지 않기 */
 let nightmareTimer = null;
+let nightmareFlashTimer = null;
 
 const levelNames = [
   "일반 시스템",
@@ -241,39 +389,44 @@ const levelNames = [
 
 const files = [
   {
-    name:"session_001.log", level:1,
-    content:`[SESSION 001]
+    name: "session_001.log",
+    level: 1,
+    content: `[SESSION 001]
 실험체 A-1 반응 확인.
 연구원 기록: 관찰 대상이 모니터를 바라보고 있었다.
 주의: 해당 문장은 이후 기록에서 삭제됨.`
   },
   {
-    name:"subject_A1.dat", level:2,
-    content:`[SUBJECT A-1]
+    name: "subject_A1.dat",
+    level: 2,
+    content: `[SUBJECT A-1]
 분류: UNKNOWN
 최초 반응: 기록 불명
 관찰 결과: 실험체가 연구원의 행동을 예측함.
 추가 기록: 관찰 대상은 카메라를 알고 있었음.`
   },
   {
-    name:"incident_0404.log", level:3,
-    content:`[INCIDENT 0404]
+    name: "incident_0404.log",
+    level: 3,
+    content: `[INCIDENT 0404]
 경고: 기록 일부 손상.
 실험실 모니터에서 등록되지 않은 메시지 발견.
 "에그, 네가 보고 있다는 걸 알아."
 작성자: UNKNOWN`
   },
   {
-    name:"experiment_017.log", level:4,
-    content:`[EXPERIMENT 017]
+    name: "experiment_017.log",
+    level: 4,
+    content: `[EXPERIMENT 017]
 연구 기록 상태: RESTRICTED
 실험체 A-1 관련 기록이 예정보다 먼저 생성됨.
 기록 생성 시간: 실험 시작 이전.
 담당 연구원 서명: [DATA CORRUPTED]`
   },
   {
-    name:"origin.dat", level:5,
-    content:`[ORIGIN FILE]
+    name: "origin.dat",
+    level: 5,
+    content: `[ORIGIN FILE]
 최고 기밀 기록 접근 완료.
 
 A-1의 최초 생성 기록을 찾을 수 없음.
@@ -286,16 +439,18 @@ A-1의 최초 생성 기록을 찾을 수 없음.
 파일 끝.`
   },
   {
-    name:"connection.log", level:2,
-    content:`[CONNECTION LOG]
+    name: "connection.log",
+    level: 2,
+    content: `[CONNECTION LOG]
 등록된 연구원: EGG
 최근 접속: 확인 불가
 접속 위치: UNKNOWN
 접속 세션: SESSION ???`
   },
   {
-    name:"deleted_0404.log", level:5,
-    content:`[RECOVERED FILE]
+    name: "deleted_0404.log",
+    level: 5,
+    content: `[RECOVERED FILE]
 삭제된 기록 복구 완료.
 
 EGG: 누가 접속했지?
@@ -318,6 +473,7 @@ function logEvent(text) {
   logs.push(
     "[" + new Date().toLocaleTimeString("ko-KR") + "] " + text
   );
+
   if (logs.length > 30) logs.shift();
   updateMonitor();
 }
@@ -365,35 +521,70 @@ function updateSecurity() {
   updateMonitor();
 }
 
-/* NIGHTMARE 명령 실행 */
+/* NIGHTMARE: 점멸 → 경고 화면 → 자동 복구 */
 function activateNightmare() {
-  // 이미 실행 중이면 타이머를 초기화해서 5초를 다시 시작
   if (nightmareTimer !== null) {
     clearTimeout(nightmareTimer);
+    nightmareTimer = null;
   }
 
-  document.body.classList.add("nightmare");
+  if (nightmareFlashTimer !== null) {
+    clearTimeout(nightmareFlashTimer);
+    nightmareFlashTimer = null;
+  }
+
+  const overlay = document.getElementById("nightmareOverlay");
+  const message = document.getElementById("nightmareMessage");
+
+  document.body.classList.remove("nightmare");
+  overlay.classList.remove("active");
+  document.body.classList.add("nightmare-flash");
+
+  alertBox.style.display = "none";
+  connection.textContent = "UNSTABLE";
 
   print(
     "⚠ NIGHTMARE PROTOCOL ACTIVATED\n" +
-    "화면 이상 감지.\n" +
-    "시스템 안정화까지 5초..."
+    "비정상적인 접근이 감지되었습니다.\n" +
+    "긴급 보안 프로토콜 실행."
   );
 
-  logEvent("NIGHTMARE PROTOCOL ACTIVATED");
+  logEvent("NIGHTMARE WARNING ACTIVATED");
 
-  nightmareTimer = setTimeout(() => {
-    document.body.classList.remove("nightmare");
-    nightmareTimer = null;
+  /* 약 4초간 점멸한 다음 경고 화면 */
+  nightmareFlashTimer = setTimeout(() => {
+    document.body.classList.remove("nightmare-flash");
 
-    print(
-      "\n[SYSTEM RECOVERY]\n" +
-      "화면 복구 완료.\n" +
-      "NIGHTMARE PROTOCOL ENDED."
-    );
+    overlay.classList.add("active");
 
-    logEvent("NIGHTMARE PROTOCOL ENDED");
-  }, 5000);
+    message.textContent =
+      "⚠ SYSTEM WARNING ⚠\n\n" +
+      "비인가 접근 감지\n\n" +
+      "SUBJECT A-1: UNKNOWN\n" +
+      "CONNECTION: UNSTABLE\n\n" +
+      "WE ARE STILL WATCHING.";
+
+    nightmareFlashTimer = null;
+
+    /* 경고 화면을 2.5초간 표시 */
+    nightmareTimer = setTimeout(() => {
+      overlay.classList.remove("active");
+      document.body.classList.remove("nightmare-flash");
+
+      message.textContent = "";
+      connection.textContent = "ONLINE";
+
+      print(
+        "\n[SYSTEM RECOVERY]\n" +
+        "비상 경보 종료.\n" +
+        "터미널 연결 복구 완료."
+      );
+
+      logEvent("NIGHTMARE WARNING ENDED");
+
+      nightmareTimer = null;
+    }, 2500);
+  }, 4000);
 }
 
 function openGuide() {
@@ -444,6 +635,7 @@ function readFile(name) {
       "\n필요 권한: LEVEL 0" + file.level +
       "\n현재 권한: LEVEL 0" + accessLevel
     );
+
     logEvent("권한 없는 파일 접근 시도: " + file.name);
     return;
   }
@@ -469,9 +661,9 @@ function unlockLevel(password) {
   const pass = password.toLowerCase();
 
   const credentials = {
-    "cell-204":3,
-    "egg-7319":4,
-    "origin-000":5
+    "cell-204": 3,
+    "egg-7319": 4,
+    "origin-000": 5
   };
 
   if (pass === "a1-0404") {
@@ -559,12 +751,14 @@ function traceConnections() {
 
   if (!traced) {
     traced = true;
+
     print(
       "\n[UNKNOWN SESSION]\n" +
       "접속 시간: 기록 손상\n" +
       "접속자: UNKNOWN\n" +
       "상태: 아직 연결되어 있음"
     );
+
     triggerIncident();
   }
 }
@@ -605,7 +799,7 @@ security             - 보안 등급 확인
 files                - 파일 목록
 cells                - 세포 소개 문서 열기
 도감                 - 네이버 블로그 세포 도감 열기
-나이트메어           - 5초 동안 화면 흔들기
+⚠️                   - 나이트메어 비상 경보 실행
 access a1-0404       - A-1 인증
 unlock [인증 코드]   - 보안 등급 해금
 cat [파일명]         - 파일 읽기
@@ -625,7 +819,7 @@ trace`
     );
   }
 
-  else if (cmd === "나이트메어") {
+  else if (cmd === "⚠️") {
     activateNightmare();
   }
 
@@ -659,6 +853,7 @@ trace`
     cellRecords.style.display = "block";
     print("세포 소개 문서가 열렸습니다.");
     print("초기 세포 기록을 확인하십시오.");
+
     cellRecords.scrollIntoView({
       behavior: "smooth",
       block: "start"
@@ -675,14 +870,19 @@ trace`
 
   else if (cmd.startsWith("cat ")) {
     const name = raw.slice(4).trim();
+
     if (!name) print("오류: 파일명을 입력하세요.");
     else readFile(name);
   }
 
   else if (cmd === "logs") {
     print("[SYSTEM LOG]");
-    if (logs.length === 0) print("저장된 기록이 없습니다.");
-    else logs.slice(-10).forEach(line => print(line));
+
+    if (logs.length === 0) {
+      print("저장된 기록이 없습니다.");
+    } else {
+      logs.slice(-10).forEach(line => print(line));
+    }
   }
 
   else if (cmd === "trace") {
@@ -734,7 +934,10 @@ trace`
   updateMonitor();
 }
 
-document.getElementById("run").addEventListener("click", runCommand);
+document.getElementById("run").addEventListener(
+  "click",
+  runCommand
+);
 
 input.addEventListener("keydown", event => {
   if (event.key === "Enter") runCommand();
