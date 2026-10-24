@@ -148,7 +148,7 @@ CONNECTION: <span id="connection">ONLINE</span>
 </div>
 
 <button id="guideButton" type="button">
-  📁 세포 도감 열기
+   세포 도감 열기
 </button>
 
 <p class="note">
