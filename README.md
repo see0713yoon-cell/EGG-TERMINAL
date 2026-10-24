@@ -77,14 +77,17 @@ button:active { background:#900; }
 button:focus-visible, input:focus-visible {
   outline:2px solid #ff7777;
 }
+#guideButton {
+  width:100%; margin-top:12px;
+  padding:13px; background:#160b20;
+  color:#C084FC; border:1px solid #C084FC;
+}
+#guideButton:active { background:#35164b; }
 #cellRecords {
-  display:none;
-  margin:20px 0;
-  line-height:1.8;
+  display:none; margin:20px 0; line-height:1.8;
 }
 .cell-card {
-  padding:12px;
-  margin-bottom:12px;
+  padding:12px; margin-bottom:12px;
   background:#100909;
 }
 .cell-purple { color:#C084FC; border:1px solid #C084FC; }
@@ -136,12 +139,17 @@ CONNECTION: <span id="connection">ONLINE</span>
 명령어를 입력하세요. (help 입력 가능)</div>
 
 <br>
+
 <div class="row">
   <input id="cmd" placeholder="명령어 입력..."
     autocomplete="off" autocapitalize="none"
     spellcheck="false" aria-label="명령어 입력">
   <button id="run" type="button">실행</button>
 </div>
+
+<button id="guideButton" type="button">
+  📁 세포 도감 열기
+</button>
 
 <p class="note">
 EGG RESEARCH LABORATORY<br>
@@ -188,6 +196,9 @@ const input = document.getElementById("cmd");
 const alertBox = document.getElementById("alert");
 const connection = document.getElementById("connection");
 const cellRecords = document.getElementById("cellRecords");
+
+const GUIDE_URL =
+  "https://m.blog.naver.com/badwars_ghosts/224307549809";
 
 let accessLevel = 1;
 let unknownConnections = 0;
@@ -282,7 +293,9 @@ function print(text) {
 }
 
 function logEvent(text) {
-  logs.push("[" + new Date().toLocaleTimeString("ko-KR") + "] " + text);
+  logs.push(
+    "[" + new Date().toLocaleTimeString("ko-KR") + "] " + text
+  );
   if (logs.length > 30) logs.shift();
   updateMonitor();
 }
@@ -303,7 +316,8 @@ function updateSecurity() {
     (accessLevel / 5 * 100) + "%";
 
   document.getElementById("levelDescription").textContent =
-    levelNames[accessLevel - 1] + " 접근 권한이 활성화되었습니다.";
+    levelNames[accessLevel - 1] +
+    " 접근 권한이 활성화되었습니다.";
 
   const levels = document.getElementById("levels");
   levels.replaceChildren();
@@ -317,8 +331,10 @@ function updateSecurity() {
     label.textContent = "LEVEL 0" + level + " · " + name;
 
     const status = document.createElement("span");
-    status.textContent = level <= accessLevel ? "UNLOCKED" : "LOCKED";
-    status.className = level <= accessLevel ? "unlocked" : "locked";
+    status.textContent =
+      level <= accessLevel ? "UNLOCKED" : "LOCKED";
+    status.className =
+      level <= accessLevel ? "unlocked" : "locked";
 
     item.append(label, status);
     levels.appendChild(item);
@@ -327,12 +343,28 @@ function updateSecurity() {
   updateMonitor();
 }
 
+function openGuide() {
+  logEvent("세포 도감 접속 시도");
+
+  const opened = window.open(GUIDE_URL, "_blank");
+
+  if (opened) {
+    print("도감 연결 요청 완료.");
+    print("미친세포들 세포 도감을 새 창에서 엽니다.");
+  } else {
+    print("새 창이 차단되었습니다.");
+    print("아래의 [세포 도감 열기] 버튼을 다시 눌러 보세요.");
+    print("직접 접속: " + GUIDE_URL);
+  }
+}
+
 function showFiles() {
   let result = "[FILE DIRECTORY]\n";
 
   files.forEach(file => {
-    result += (file.level <= accessLevel ? "[OPEN] " : "[LOCKED] ")
-      + file.name + "\n";
+    result +=
+      (file.level <= accessLevel ? "[OPEN] " : "[LOCKED] ") +
+      file.name + "\n";
   });
 
   result += "\n접근 가능: " +
@@ -368,11 +400,15 @@ function readFile(name) {
 
   if (file.name === "origin.dat") {
     originRead = true;
-    print("\n[추가 기록]\n명령어 trace로 접속 기록을 확인할 수 있습니다.");
+    print(
+      "\n[추가 기록]\n명령어 trace로 접속 기록을 확인할 수 있습니다."
+    );
   }
 
   if (file.name === "deleted_0404.log") {
-    print("\n⚠ 복구된 기록은 실제 연구소의 기록과 다를 수 있습니다.");
+    print(
+      "\n⚠ 복구된 기록은 실제 연구소의 기록과 다를 수 있습니다."
+    );
   }
 }
 
@@ -417,7 +453,9 @@ function unlockLevel(password) {
   }
 
   if (targetLevel !== accessLevel + 1) {
-    print("ACCESS DENIED\n현재 단계의 인증을 먼저 완료해야 합니다.");
+    print(
+      "ACCESS DENIED\n현재 단계의 인증을 먼저 완료해야 합니다."
+    );
     return;
   }
 
@@ -513,6 +551,7 @@ status               - 시스템 상태
 security             - 보안 등급 확인
 files                - 파일 목록
 cells                - 세포 소개 문서 열기
+도감                 - 네이버 블로그 세포 도감 열기
 access a1-0404       - A-1 인증
 unlock [인증 코드]   - 보안 등급 해금
 cat [파일명]         - 파일 읽기
@@ -554,11 +593,18 @@ trace`
     showFiles();
   }
 
+  else if (cmd === "도감") {
+    openGuide();
+  }
+
   else if (cmd === "cells") {
     cellRecords.style.display = "block";
     print("세포 소개 문서가 열렸습니다.");
     print("초기 세포 기록을 확인하십시오.");
-    cellRecords.scrollIntoView({ behavior: "smooth", block: "start" });
+    cellRecords.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
   }
 
   else if (cmd === "access a1-0404") {
@@ -613,7 +659,8 @@ trace`
   }
 
   else if (cmd === "clear") {
-    output.textContent = "EGG OS v4.0.4\n화면이 초기화되었습니다.";
+    output.textContent =
+      "EGG OS v4.0.4\n화면이 초기화되었습니다.";
   }
 
   else {
@@ -634,6 +681,11 @@ document.getElementById("run").addEventListener("click", runCommand);
 input.addEventListener("keydown", event => {
   if (event.key === "Enter") runCommand();
 });
+
+document.getElementById("guideButton").addEventListener(
+  "click",
+  openGuide
+);
 
 updateSecurity();
 logEvent("EGG TERMINAL 시작");
