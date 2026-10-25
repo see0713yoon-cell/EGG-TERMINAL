@@ -138,7 +138,6 @@ button:active { background: #900; }
   100% { transform: translateX(0); }
 }
 
-/* 기존 화면 흔들기 효과 */
 body.nightmare {
   animation: nightmareShake .12s infinite;
   will-change: transform;
@@ -157,7 +156,6 @@ body.nightmare {
   90% { transform: translate(-4px, 2px); }
 }
 
-/* NIGHTMARE: 빨강·검정 화면 점멸 */
 body.nightmare-flash {
   animation: nightmareFlash .2s steps(1, end) 20;
 }
@@ -187,7 +185,6 @@ body.nightmare-flash #output {
   color: #fff;
 }
 
-/* 긴급 경고 전체 화면 */
 #nightmareOverlay {
   display: none;
   position: fixed;
@@ -202,9 +199,7 @@ body.nightmare-flash #output {
   font-family: monospace;
 }
 
-#nightmareOverlay.active {
-  display: flex;
-}
+#nightmareOverlay.active { display: flex; }
 
 #nightmareMessage {
   font-size: 20px;
@@ -250,6 +245,38 @@ input:focus-visible {
 
 #cellRecords h3 { font-size: 16px; }
 
+/* 공식 기록실 */
+.archive-link {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  text-align: center;
+  text-decoration: none;
+  background: #250909;
+  color: #ff7777;
+  border: 1px solid #ff4545;
+  font-family: monospace;
+  font-size: 14px;
+}
+
+.archive-link:active { background: #600; }
+
+.archive-entry {
+  border: 1px solid #522020;
+  padding: 12px;
+  margin: 12px 0;
+}
+
+.archive-label {
+  color: #888;
+  font-size: 12px;
+}
+
+#officialArchive {
+  scroll-margin-top: 15px;
+}
+
 @media (prefers-reduced-motion: reduce) {
   body.nightmare-flash {
     animation: none;
@@ -263,7 +290,6 @@ input:focus-visible {
 
 <h1>EGG TERMINAL</h1>
 
-<!-- NIGHTMARE 경고 화면 -->
 <div id="nightmareOverlay" role="alert" aria-live="assertive">
   <div id="nightmareMessage"></div>
 </div>
@@ -317,6 +343,57 @@ CONNECTION: <span id="connection">ONLINE</span>
   세포 도감 열기
 </button>
 
+<!-- EGG 공식 기록실 버튼 및 문서 -->
+<div class="panel" id="officialArchive">
+  <div class="panel-title">EGG OFFICIAL ARCHIVE</div>
+
+  <p class="note">
+    EGG 연구소 공식 기록실<br>
+    연구 문서 및 기밀 기록 열람
+  </p>
+
+  <div class="archive-entry">
+    <div class="archive-label">ARCHIVE NOTICE / 001</div>
+
+    <h3>공식 기록실 개설 안내</h3>
+
+    <p class="note">
+      EGG 연구소 공식 기록실의 개설 안내 문서입니다.
+    </p>
+
+    <a class="archive-link"
+       href="https://m.blog.naver.com/leaf_0713/224452886827"
+       target="_blank"
+       rel="noopener noreferrer">
+      [ 공식 기록실 접속 ]
+    </a>
+  </div>
+
+  <div class="archive-entry">
+    <div class="archive-label">
+      CLASSIFIED DOCUMENT / A-0 / 001
+    </div>
+
+    <h3>기밀 연구 기록 A-0 — 문서 001</h3>
+
+    <p class="note">
+      문서 번호: A-0-001<br>
+      분류: 기밀 연구 기록
+    </p>
+
+    <a class="archive-link"
+       href="https://m.blog.naver.com/leaf_0713/224452889507"
+       target="_blank"
+       rel="noopener noreferrer">
+      [ 기밀 문서 001 열람 ]
+    </a>
+  </div>
+
+  <p class="note">
+    EGG RESEARCH LAB // EXTERNAL ARCHIVE CONNECTION
+  </p>
+</div>
+
 <p class="note">
 EGG RESEARCH LABORATORY<br>
 UNAUTHORIZED ACCESS IS PROHIBITED.
@@ -366,6 +443,12 @@ const cellRecords = document.getElementById("cellRecords");
 const GUIDE_URL =
   "https://m.blog.naver.com/badwars_ghosts/224307549809";
 
+const ARCHIVE_NOTICE_URL =
+  "https://m.blog.naver.com/leaf_0713/224452886827";
+
+const ARCHIVE_DOCUMENT_URL =
+  "https://m.blog.naver.com/leaf_0713/224452889507";
+
 let accessLevel = 1;
 let unknownConnections = 0;
 let incidents = 0;
@@ -375,7 +458,6 @@ let rebooted = false;
 let originRead = false;
 let glitchActive = false;
 
-/* NIGHTMARE 타이머: 중복 선언하지 않기 */
 let nightmareTimer = null;
 let nightmareFlashTimer = null;
 
@@ -511,6 +593,7 @@ function updateSecurity() {
     const status = document.createElement("span");
     status.textContent =
       level <= accessLevel ? "UNLOCKED" : "LOCKED";
+
     status.className =
       level <= accessLevel ? "unlocked" : "locked";
 
@@ -521,7 +604,7 @@ function updateSecurity() {
   updateMonitor();
 }
 
-/* NIGHTMARE: 점멸 → 경고 화면 → 자동 복구 */
+/* NIGHTMARE 경고 및 자동 복구 */
 function activateNightmare() {
   if (nightmareTimer !== null) {
     clearTimeout(nightmareTimer);
@@ -551,10 +634,8 @@ function activateNightmare() {
 
   logEvent("NIGHTMARE WARNING ACTIVATED");
 
-  /* 약 4초간 점멸한 다음 경고 화면 */
   nightmareFlashTimer = setTimeout(() => {
     document.body.classList.remove("nightmare-flash");
-
     overlay.classList.add("active");
 
     message.textContent =
@@ -566,7 +647,6 @@ function activateNightmare() {
 
     nightmareFlashTimer = null;
 
-    /* 경고 화면을 2.5초간 표시 */
     nightmareTimer = setTimeout(() => {
       overlay.classList.remove("active");
       document.body.classList.remove("nightmare-flash");
@@ -581,7 +661,6 @@ function activateNightmare() {
       );
 
       logEvent("NIGHTMARE WARNING ENDED");
-
       nightmareTimer = null;
     }, 2500);
   }, 4000);
@@ -596,10 +675,26 @@ function openGuide() {
     print("도감 연결 요청 완료.");
     print("미친세포들 세포 도감을 새 창에서 엽니다.");
   } else {
-    print("새 창이 차단되었습니다.");
-    print("아래의 [세포 도감 열기] 버튼을 다시 눌러 보세요.");
-    print("직접 접속: " + GUIDE_URL);
+    print("새 창이 차단되었을 수 있습니다.");
+    print("도감 주소: " + GUIDE_URL);
+    window.location.href = GUIDE_URL;
   }
+}
+
+/* 공식 기록실로 이동 */
+function openArchive() {
+  const archive = document.getElementById("officialArchive");
+
+  archive.scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+
+  print("EGG 공식 기록실에 접속했습니다.");
+  print("등록 문서: ARCHIVE NOTICE / A-0-001");
+  print("원문은 아래 기록실 버튼을 눌러 열람하십시오.");
+
+  logEvent("공식 기록실 접속");
 }
 
 function showFiles() {
@@ -613,6 +708,7 @@ function showFiles() {
 
   result += "\n접근 가능: " +
     files.filter(f => f.level <= accessLevel).length;
+
   result += "\n잠김: " +
     files.filter(f => f.level > accessLevel).length;
 
@@ -645,6 +741,7 @@ function readFile(name) {
 
   if (file.name === "origin.dat") {
     originRead = true;
+
     print(
       "\n[추가 기록]\n명령어 trace로 접속 기록을 확인할 수 있습니다."
     );
@@ -799,6 +896,8 @@ security             - 보안 등급 확인
 files                - 파일 목록
 cells                - 세포 소개 문서 열기
 도감                 - 네이버 블로그 세포 도감 열기
+archive              - EGG 공식 기록실 열기
+기록실               - EGG 공식 기록실 열기
 ⚠️                   - 나이트메어 비상 경보 실행
 access a1-0404       - A-1 인증
 unlock [인증 코드]   - 보안 등급 해금
@@ -849,8 +948,14 @@ trace`
     openGuide();
   }
 
+  /* 새 공식 기록실 명령어 */
+  else if (cmd === "archive" || cmd === "기록실") {
+    openArchive();
+  }
+
   else if (cmd === "cells") {
     cellRecords.style.display = "block";
+
     print("세포 소개 문서가 열렸습니다.");
     print("초기 세포 기록을 확인하십시오.");
 
